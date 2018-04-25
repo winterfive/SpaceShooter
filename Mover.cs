@@ -22,7 +22,8 @@ public class Mover : MonoBehaviour {
 		// Asteroid has a random speed
 		if (rb.tag == "Asteroid") {
 			rb.velocity = transform.forward * asteroidSpeed;
-			// TODO Add random direction, change transform.forward
+			// TODO Add random direction
+			// Change transform.forward
 		}
 
 		if (rb.tag == "Bolt") {
