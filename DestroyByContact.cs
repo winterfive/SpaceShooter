@@ -6,23 +6,56 @@ public class DestroyByContact : MonoBehaviour {
 
 	public GameObject explosion;
 	public GameObject playerExplosion;
+	public int scoreValue;
 
-	void OnTriggerEnter(Collider other) {
+	private GameController myGameControllerReference;
 
-		if (other.tag == "BoundingBox") {
+	void Start() {
+
+		// Each instance of Asteroid will need its own reference to the GameController script
+		// Asteroid instance gets a reference -> GameController Component on GameController object
+		
+		// Find the thing we will point at
+		// Find the object that holds the GameController script via it's tag
+		GameObject gameControllerObject = GameObject.FindWithTag ("GameController");
+
+		// Did we find the object tagged GameController?
+		if (gameControllerObject != null) {
+			// Set the reference to the GameController Component (script)
+			// found on the GameController object in the scene
+			myGameControllerReference = gameControllerObject.GetComponent <GameController> ();
+		}
+
+		// Insurance policy code
+		if (myGameControllerReference == null) {
+			Debug.Log ("Cannot find GameController script");
+		}
+	}
+
+	void OnTriggerEnter (Collider other)
+	{
+		if (other.CompareTag ("Boundary") || other.CompareTag ("Enemy"))
+		{
 			return;
 		}
 
-		if (other.tag == "Player") {
-			Instantiate (playerExplosion, transform.position, transform.rotation);
+		if (explosion != null)
+		{
+			Instantiate (explosion, transform.position, transform.rotation);
 		}
 
-		if (other.tag == "Bolt") {
-			Debug.Log (name);
+		if (other.tag == "Player")
+		{
+			Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
+			myGameControllerReference.GameIsOver ();
 		}
 
-		Instantiate(explosion, transform.position, transform.rotation);
-		Destroy(other.gameObject);
-		Destroy(gameObject);
+		if (other.CompareTag ("Bolt"))
+		{
+			myGameControllerReference.AddScore (scoreValue);
+		}
+		
+		Destroy (other.gameObject);
+		Destroy (gameObject);
 	}
 }
