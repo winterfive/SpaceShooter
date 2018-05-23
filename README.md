@@ -6,6 +6,6 @@ Space Shooter game that uses C# &amp; Unity, created following the obsolete tuto
 
 Added extras:
 - Random speeds for asteroids
-- TODO Random within range of degrees direction for asteroids
+- Updated code for use in Unity 2018
 
 
